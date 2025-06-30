@@ -1,6 +1,7 @@
 const express = require('express');
 const Product = require('../models/Product');
 const router = express.Router();
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 // Get all products
 router.get('/', async (req, res) => {
@@ -12,8 +13,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Add new product
-router.post('/', async (req, res) => {
+// Protected: Add new product (admin only)
+router.post('/', verifyAdmin, async (req, res) => {
   try {
     const product = new Product(req.body);
     const savedProduct = await product.save();
@@ -35,7 +36,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update product by ID
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -50,7 +51,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete product by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyAdmin, async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
     if (!deletedProduct) return res.status(404).json({ error: 'Product not found' });

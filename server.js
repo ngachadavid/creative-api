@@ -8,6 +8,8 @@ const Product = require('./models/Product');
 const productRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
 const orderRoutes = require('./routes/orders');
+const adminRoutes = require('./routes/admin');
+
 
 const app = express();
 
@@ -52,6 +54,7 @@ app.use('/api/cart', cartRoutes);
 
 app.use('/api/orders', orderRoutes);
 
+app.use('/api/admin', adminRoutes);
 
 // Test session route
 app.get('/api/test-session', (req, res) => {
