@@ -4,6 +4,9 @@ const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 require('dotenv').config();
+const Product = require('./models/Product');
+const productRoutes = require('./routes/products');
+const cartRoutes = require('./routes/cart');
 
 const app = express();
 
@@ -39,6 +42,13 @@ app.use(session({
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
+
+// Use product routes
+app.use('/api/products', productRoutes);
+
+// Use cart routes
+app.use('/api/cart', cartRoutes);
+
 
 // Test session route
 app.get('/api/test-session', (req, res) => {
