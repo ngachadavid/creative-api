@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Admin = require('../models/Admin');
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 router.post('/login', async (req, res) => {
   try {
@@ -37,6 +38,11 @@ router.post('/login', async (req, res) => {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Server error' });
   }
+});
+
+// Token verification route
+router.get('/verify', verifyAdmin, (req, res) => {
+  res.json({ message: 'Token is valid', adminId: req.adminId });
 });
 
 module.exports = router;
